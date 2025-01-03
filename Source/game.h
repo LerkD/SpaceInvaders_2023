@@ -140,7 +140,6 @@ struct Game
 	void Update();
 	void Render();
 	void SpawnAliens();
-
 	bool CheckCollision(Vector2 circlePos, float circleRadius, Vector2 lineTop, Vector2 lineBottom);
 	bool CheckNewHighScore();
 
