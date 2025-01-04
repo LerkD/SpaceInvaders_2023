@@ -69,7 +69,7 @@ void Game::Update()
 		{
 			alien.Update(); 
 
-			if (alien.HasReachedYPosition(GetScreenHeight() - PLAYER_BASE_HEIGHT))
+			if (alien.HasReachedYPosition(static_cast<float>(GetScreenHeight()) - PLAYER_BASE_HEIGHT))
 			{
 				End();
 			}
@@ -97,13 +97,13 @@ void Game::Update()
 
 		for (auto& projectile : Projectiles)
 		{
-			if (projectile.type == EntityType::PLAYER_PROJECTILE)
+			if (projectile.isPlayerProjectile())
 			{
 				for (auto& alien : Aliens)
 				{
 					if (CheckCollision(alien.GetPosition(), ALIEN_RADIUS, projectile.lineStart, projectile.lineEnd))
 					{
-						projectile.active = false;
+						projectile.Hit();
 						alien.Kill();
 						score += 100;
 					}
@@ -111,11 +111,11 @@ void Game::Update()
 			}
 
 			
-				if (projectile.type == EntityType::ENEMY_PROJECTILE)
+			else 
 				{
-					if (CheckCollision({player.GetPosition(), GetScreenHeight() - PLAYER_BASE_HEIGHT}, PLAYER_RADIUS, projectile.lineStart, projectile.lineEnd))
+					if (CheckCollision({player.GetPosition(), static_cast<float>(GetScreenHeight()) - PLAYER_BASE_HEIGHT}, PLAYER_RADIUS, projectile.lineStart, projectile.lineEnd))
 					{
-						projectile.active = false; 
+						projectile.Hit(); 
 						player.DecreaseHealth();
 					}
 				}
@@ -125,7 +125,7 @@ void Game::Update()
 			{
 				if (CheckCollision(wall.GetPosition(), WALL_RADIUS, projectile.lineStart, projectile.lineEnd))
 				{
-					projectile.active = false;
+					projectile.Hit();
 					wall.DecreaseHealth();
 				}
 			}
@@ -133,12 +133,8 @@ void Game::Update()
 
 		if (IsKeyPressed(KEY_SPACE))
 		{
-			float window_height = (float)GetScreenHeight();
-			Projectile newProjectile;
-			newProjectile.position.x = player.GetPosition();
-			newProjectile.position.y = window_height - 130;
-			newProjectile.type = EntityType::PLAYER_PROJECTILE;
-			Projectiles.push_back(newProjectile);
+			Vector2 projectilePos = { player.GetPosition(), static_cast<float>(GetScreenHeight()) - 130 };
+			Projectiles.push_back(Projectile(projectilePos, true));
 		}
 
 		shootTimer += 1;
@@ -151,18 +147,15 @@ void Game::Update()
 				randomAlienIndex = rand() % Aliens.size();
 			}
 
-			Projectile newProjectile;
-			newProjectile.position = Aliens.at(randomAlienIndex).GetPosition();
-			newProjectile.position.y += 40;
-			newProjectile.speed = -15;
-			newProjectile.type = EntityType::ENEMY_PROJECTILE;
-			Projectiles.push_back(newProjectile);
+			Vector2 projectilePos = Aliens.at(randomAlienIndex).GetPosition();
+			projectilePos.y += 40;
+			Projectiles.push_back(Projectile(projectilePos, false));
 			shootTimer = 0;
 		}
 
 		for (int i = 0; i < Projectiles.size(); i++)
 		{
-			if (Projectiles.at(i).active == false)
+			if (Projectiles.at(i).isDead() == false)
 			{
 				Projectiles.erase(Projectiles.begin() + i);
 				i--;

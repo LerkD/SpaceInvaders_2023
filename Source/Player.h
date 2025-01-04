@@ -11,7 +11,7 @@ static constexpr Vector2 PosOr = { 50,50 };
 class Player
 {
 private:
-    float x_pos = GetScreenWidth() / 2.0f;
+    float x_pos = static_cast<float>(GetScreenWidth()) / 2.0f;
     int lives = 3;
     float timer = 0;
     int activeTexture = 0;

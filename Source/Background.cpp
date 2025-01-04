@@ -4,8 +4,8 @@ Background::Background() noexcept
 {
 	for (int i = 0; i < START_AMOUNT; i++)
 	{
-		const Vector2 tmpPos{ GetRandomValue(-150, GetScreenWidth() + 150), GetRandomValue(0, GetScreenHeight()) };
-		const float tmpSize = GetRandomValue(1.0f, 4.0f) / 2.0f;
+		const Vector2 tmpPos{ static_cast<float>(GetRandomValue(-150, GetScreenWidth() + 150)), static_cast<float>(GetRandomValue(0, GetScreenHeight())) };
+		const float tmpSize = static_cast<float>(GetRandomValue(1.0f, 4.0f) / 2.0f);
 		Stars.push_back(Star(tmpPos, tmpSize));
 	}
 }
@@ -13,7 +13,7 @@ void Background::Update(float offset) noexcept
 {
 	for (auto& star : Stars)
 	{
-		star.Update(offset);
+		Stars.at(0).Update(offset);
 	}
 }
 void Background::Render() noexcept
@@ -24,13 +24,7 @@ void Background::Render() noexcept
 	}
 }
 
-void Star::Update(float offset) noexcept 
-{
-	position.x = initPosition.x + offset;
-	position.y = initPosition.y;
-}
-
 void Star::Render() noexcept 
 {
-	DrawCircle(static_cast<int>(position.x), static_cast<int>(position.y), size, SKYBLUE);
+	DrawCircle(static_cast<int>(position.x + offset), static_cast<int>(position.y), size, SKYBLUE);
 }

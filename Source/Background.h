@@ -7,13 +7,13 @@ static constexpr int START_AMOUNT = 600;
 class Star
 {
 private:
-    Vector2 initPosition = { 0, 0 };
     Vector2 position = { 0, 0 };
+    inline static float offset;
     float size = 0;
 
 public: 
-    Star(Vector2 pos, float sz) noexcept : initPosition(pos), position(pos), size(sz) {};
-    void Update(float offset) noexcept;
+    Star(Vector2 pos, float sz) noexcept : position(pos), size(sz) {};
+    void Update(float _offset) noexcept { offset = _offset; }
     void Render() noexcept;
 };
 
