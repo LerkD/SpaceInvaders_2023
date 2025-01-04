@@ -9,23 +9,14 @@
 
 void Game::Start()
 {
-	float window_width = (float)GetScreenWidth(); 
-	float window_height = (float)GetScreenHeight(); 
-	float wall_distance = window_width / (wallCount + 1); 
-
+	 
 	for (int i = 0; i < wallCount; i++)
 	{
-		Wall newWalls;
-		newWalls.position.y = window_height - 250; 
-		newWalls.position.x = wall_distance * (i + 1); 
-
-		Walls.push_back(newWalls); 
+		Walls.push_back(Wall(wall_distance * i, wallsY)); 
 
 	}
 
-	Player newPlayer;
-	player = newPlayer;
-	player.Initialize();
+	player = Player();
 
 	SpawnAliens();
 	
@@ -81,13 +72,13 @@ void Game::Update()
 		{
 			alien.Update(); 
 
-			if (alien.position.y > GetScreenHeight() - player.player_base_height)
+			if (alien.position.y > GetScreenHeight() - PLAYER_BASE_HEIGHT)
 			{
 				End();
 			}
 		}
 
-		if (player.lives < 1)
+		if (player.IsDead())
 		{
 			End();
 		}
@@ -97,19 +88,14 @@ void Game::Update()
 			SpawnAliens();
 		}
 
-		playerPos = { player.x_pos, (float)player.player_base_height };
-		cornerPos = { 0, (float)player.player_base_height };
+		playerPos = { player.GetPosition(), PLAYER_BASE_HEIGHT};
+		cornerPos = { 0, PLAYER_BASE_HEIGHT};
 		offset = lineLength(playerPos, cornerPos) * -1;
 		background.Update(offset / 15);
 
 		for (auto& projectile : Projectiles)
 		{
 			projectile.Update();
-		}
-		
-		for (auto& wall : Walls)
-		{
-			wall.Update();
 		}
 
 		for (auto& projectile : Projectiles)
@@ -130,10 +116,10 @@ void Game::Update()
 			
 				if (projectile.type == EntityType::ENEMY_PROJECTILE)
 				{
-					if (CheckCollision({player.x_pos, GetScreenHeight() - player.player_base_height }, player.radius, projectile.lineStart, projectile.lineEnd))
+					if (CheckCollision({player.GetPosition(), GetScreenHeight() - PLAYER_BASE_HEIGHT}, PLAYER_RADIUS, projectile.lineStart, projectile.lineEnd))
 					{
 						projectile.active = false; 
-						player.lives -= 1; 
+						player.DecreaseHealth();
 					}
 				}
 			
@@ -141,10 +127,10 @@ void Game::Update()
 
 			for (auto& wall : Walls)
 			{
-				if (CheckCollision(wall.position, wall.radius, projectile.lineStart, projectile.lineEnd))
+				if (CheckCollision(wall.GetPosition(), WALL_RADIUS, projectile.lineStart, projectile.lineEnd))
 				{
 					projectile.active = false;
-					wall.health -= 1;
+					wall.DecreaseHealth();
 				}
 			}
 		}
@@ -153,7 +139,7 @@ void Game::Update()
 		{
 			float window_height = (float)GetScreenHeight();
 			Projectile newProjectile;
-			newProjectile.position.x = player.x_pos;
+			newProjectile.position.x = player.GetPosition();
 			newProjectile.position.y = window_height - 130;
 			newProjectile.type = EntityType::PLAYER_PROJECTILE;
 			Projectiles.push_back(newProjectile);
@@ -196,7 +182,7 @@ void Game::Update()
 		}
 		for (int i = 0; i < Walls.size(); i++)
 		{
-			if (Walls.at(i).active == false)
+			if (Walls.at(i).IsNotActive())
 			{
 				Walls.erase(Walls.begin() + i);
 				i--;
@@ -209,8 +195,6 @@ void Game::Update()
 		{
 			Continue();
 		}
-
-	
 
 		if (newHighScore)
 		{
@@ -280,9 +264,9 @@ void Game::Render()
 	case State::GAMEPLAY:
 		background.Render();
 		DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW);
-		DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
+		DrawText(TextFormat("Lives: %i", player.GetLives()), 50, 70, 40, YELLOW);
 
-		player.Render(resources.shipTextures[player.activeTexture]);
+		player.Render(resources.shipTextures[player.GetActiveTexture()]);
 
 		for (auto& projectile : Projectiles)
 		{

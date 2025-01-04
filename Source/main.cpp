@@ -3,10 +3,10 @@
 
 int main(void)
 {   
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
+    constexpr float SCREEN_WIDTH = 1920.0f;
+    constexpr float SCREEN_HEIGHT = 1080.0f;
 
-    InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "SPACE INVADERS");
 
     SetTargetFPS(60);  
 
