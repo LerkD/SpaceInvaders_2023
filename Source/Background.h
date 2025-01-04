@@ -2,19 +2,28 @@
 #include <raylib.h>
 #include <vector>
 
-struct Star
+static constexpr int START_AMOUNT = 600;
+
+class Star
 {
+private:
     Vector2 initPosition = { 0, 0 };
     Vector2 position = { 0, 0 };
-    Color color = GRAY;
     float size = 0;
-    void Update(float starOffset);
-    void Render();
+
+public: 
+    Star(Vector2 pos, float sz) noexcept : initPosition(pos), position(pos), size(sz) {};
+    void Update(float offset) noexcept;
+    void Render() noexcept;
 };
-struct Background
+
+class Background
 {
+private:
     std::vector<Star> Stars;
-    void Initialize(int starAmount);
-    void Update(float offset);
-    void Render();
+    
+public:
+    Background() noexcept;
+    void Update(float offset) noexcept;
+    void Render() noexcept;
 };

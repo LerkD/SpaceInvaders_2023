@@ -6,7 +6,6 @@
 #include <thread>
 #include <fstream>
 
-
 void Game::Start()
 {
 	 
@@ -20,9 +19,7 @@ void Game::Start()
 
 	SpawnAliens();
 	
-	Background newBackground;
-	newBackground.Initialize(600);
-	background = newBackground;
+	background = Background();
 
 	score = 0;
 	leaderboard = Leaderboard();
@@ -72,7 +69,7 @@ void Game::Update()
 		{
 			alien.Update(); 
 
-			if (alien.position.y > GetScreenHeight() - PLAYER_BASE_HEIGHT)
+			if (alien.HasReachedYPosition(GetScreenHeight() - PLAYER_BASE_HEIGHT))
 			{
 				End();
 			}
@@ -104,10 +101,10 @@ void Game::Update()
 			{
 				for (auto& alien : Aliens)
 				{
-					if (CheckCollision(alien.position, alien.radius, projectile.lineStart, projectile.lineEnd))
+					if (CheckCollision(alien.GetPosition(), ALIEN_RADIUS, projectile.lineStart, projectile.lineEnd))
 					{
 						projectile.active = false;
-						alien.active = false;
+						alien.Kill();
 						score += 100;
 					}
 				}
@@ -123,7 +120,6 @@ void Game::Update()
 					}
 				}
 			
-
 
 			for (auto& wall : Walls)
 			{
@@ -156,7 +152,7 @@ void Game::Update()
 			}
 
 			Projectile newProjectile;
-			newProjectile.position = Aliens.at(randomAlienIndex).position;
+			newProjectile.position = Aliens.at(randomAlienIndex).GetPosition();
 			newProjectile.position.y += 40;
 			newProjectile.speed = -15;
 			newProjectile.type = EntityType::ENEMY_PROJECTILE;
@@ -174,7 +170,7 @@ void Game::Update()
 		}
 		for (int i = 0; i < Aliens.size(); i++)
 		{
-			if (Aliens.at(i).active == false)
+			if (Aliens.at(i).isDead())
 			{
 				Aliens.erase(Aliens.begin() + i);
 				i--;
@@ -182,7 +178,7 @@ void Game::Update()
 		}
 		for (int i = 0; i < Walls.size(); i++)
 		{
-			if (Walls.at(i).IsNotActive())
+			if (Walls.at(i).IsDead())
 			{
 				Walls.erase(Walls.begin() + i);
 				i--;
@@ -348,13 +344,7 @@ void Game::SpawnAliens()
 {
 	for (int row = 0; row < formationHeight; row++) {
 		for (int col = 0; col < formationWidth; col++) {
-			Alien newAlien = Alien();
-			newAlien.active = true;
-			newAlien.position.x = formationX + 450 + (col * alienSpacing);
-			newAlien.position.y = formationY + (row * alienSpacing);
-			Aliens.push_back(newAlien);
-			std::cout << "Find Alien -X:" << newAlien.position.x << std::endl;
-			std::cout << "Find Alien -Y:" << newAlien.position.y << std::endl;
+			Aliens.push_back(Alien(formationX + 450 + (col * alienSpacing), formationY + (row * alienSpacing)));
 		}
 	}
 

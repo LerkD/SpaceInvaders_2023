@@ -2,19 +2,32 @@
 #include "raylib.h"
 #include "EntityType.h"
 
+static constexpr float ALIEN_RADIUS = 30.0f;
+static constexpr Vector2 DT_o = { 50, 50 };
 
-struct Alien
+class Alien
 {
 public:
-    Color color = WHITE;
+private:
+    int speed = 2; 
     Vector2 position = { 0, 0 };
     int x = 0;
     int y = 0;
-    float radius = 30;
     bool active = true;
-    bool moveRight = true;
+
+public: 
     EntityType type = EntityType::ENEMY;
-    int speed = 2;
-    void Update();
-    void Render(Texture2D texture);
+    
+    Alien(int x, int y) noexcept : x(x), y(y)
+    {
+        position.x = x;
+        position.y = y;
+    }
+    void Update() noexcept;
+    void Render(Texture2D texture) noexcept;
+    void Kill() noexcept { active = false; }
+    bool isDead() const noexcept { return !active; }
+    bool HasReachedYPosition(int boundary) const noexcept { return position.y > boundary; }
+    Vector2 GetPosition() const noexcept { return position; }
+
 };
