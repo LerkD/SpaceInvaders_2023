@@ -179,7 +179,6 @@
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
-    <ClCompile Include="Source\Resources.cpp" />
     <ClCompile Include="Source\Alien.cpp" />
     <ClCompile Include="Source\Leaderboard.cpp" />
     <ClCompile Include="Source\Player.cpp" />
