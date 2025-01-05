@@ -11,8 +11,8 @@ public:
     void Update() noexcept;
     void Render(Texture2D texture) noexcept;
     void Hit() noexcept { active = false; }
-    bool isPlayerProjectile() const noexcept { return speed < 0; }
-    bool isDead() const noexcept { return !active; }
+    [[nodiscard]] bool isPlayerProjectile() const noexcept { return speed < 0; }
+    [[nodiscard]] bool isDead() const noexcept { return !active; }
 
 private:
     int speed = 15;

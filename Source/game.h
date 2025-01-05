@@ -9,6 +9,8 @@
 #include "Projectile.h"
 #include "Background.h"
 #include "Leaderboard.h"
+#include "Utility.h"
+
 
 
 enum struct State
@@ -29,13 +31,13 @@ private:
 	bool newHighScore = false;
 	
 	static constexpr int wallCount = 5;
-	float wallsY = static_cast<float>(GetScreenHeight()) - 250.0f;
-	float wall_distance = static_cast<float>(GetScreenWidth()) / (wallCount + 1.0f);
+	float wallsY = SCREEN_HEIGHT - 250.0f;
+	float wall_distance = SCREEN_WIDTH / (wallCount + 1.0f);
 	static constexpr int aliensFormationWidth = 8;
 	static constexpr int aliensFormationHeight = 5;
-	static constexpr int alienSpacing = 80;
-	static constexpr int aliensFormationX = 100;
-	static constexpr int aliensFormationY = 50;
+	static constexpr float alienSpacing = 80.0f;
+	static constexpr float aliensFormationX = 100.0f;
+	static constexpr float aliensFormationY = 50.0f;
 
 	const std::vector<OwnTexture> shipTextures{
 		OwnTexture("Assets/Ship1.png"),

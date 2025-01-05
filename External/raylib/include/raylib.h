@@ -1,3 +1,4 @@
+#pragma warning( disable : 26812 ) 
 /**********************************************************************************************
 *
 *   raylib v4.2 - A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)
