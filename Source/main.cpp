@@ -10,7 +10,7 @@ int main(void)
 
     SetTargetFPS(60);  
 
-    Game game = { State::STARTSCREEN };
+    Game game = Game();
     
     while (!WindowShouldClose())    
     {

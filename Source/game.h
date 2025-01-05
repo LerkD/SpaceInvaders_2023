@@ -21,38 +21,30 @@ enum struct State
 
 struct Game
 {
-	State gameState = {};
-	int score;
-	int wallCount = 5;
-	float wallsY = static_cast<float>(GetScreenHeight()) - 250.0f;
-	float wall_distance = static_cast<float>(GetScreenWidth()) / (wallCount - 1.0f);
+private:
+	State gameState = { State::STARTSCREEN };
+	int score = 0;
+	static constexpr int scoreAddifyer = 100;
 	float shootTimer = 0;
-	Rectangle rec = { 0, 0 ,0 ,0 }; 
-
-	int formationWidth = 8;
-	int formationHeight = 5;
-	int alienSpacing = 80;
-	int formationX = 100;
-	int formationY = 50;
-
 	bool newHighScore = false;
 	
-	void Start();
-	void End();
-	void Continue();
-	
-	void Update();
-	void Render();
-	void SpawnAliens();
-	
-	std::vector<OwnTexture> shipTextures{
+	static constexpr int wallCount = 5;
+	float wallsY = static_cast<float>(GetScreenHeight()) - 250.0f;
+	float wall_distance = static_cast<float>(GetScreenWidth()) / (wallCount + 1.0f);
+	static constexpr int aliensFormationWidth = 8;
+	static constexpr int aliensFormationHeight = 5;
+	static constexpr int alienSpacing = 80;
+	static constexpr int aliensFormationX = 100;
+	static constexpr int aliensFormationY = 50;
+
+	const std::vector<OwnTexture> shipTextures{
 		OwnTexture("Assets/Ship1.png"),
 		OwnTexture("Assets/Ship2.png"),
 		OwnTexture("Assets/Ship3.png"),
 	};
-	OwnTexture alienTexture{ "Assets/Alien.png" };
-	OwnTexture barrierTexture{ "Assets/Barrier.png" };
-	OwnTexture laserTexture{ "Assets/Laser.png" };
+	const OwnTexture alienTexture{ "Assets/Alien.png" };
+	const OwnTexture barrierTexture{ "Assets/Barrier.png" };
+	const OwnTexture laserTexture{ "Assets/Laser.png" };
 
 	Player player;
 	std::vector<Projectile> Projectiles;
@@ -75,4 +67,23 @@ struct Game
 
 	int framesCounter = 0;
 
+	void Start();
+	void End() noexcept;
+	void ShowStartScreen() noexcept;
+	void SpawnAliens();
+	void SpawnWalls();
+	void CheckProjectileHit() noexcept;
+	void PlayerShoot();
+	void AliensShoot();
+	void ClearDeadEntities();
+	bool IsEndConditionTriggered();
+	void MouseOnEndScreenText() noexcept;
+	void MouseNotOnEndScreenText() noexcept;
+	void RenderStartScreen() noexcept;
+	void RenderGameplay();
+	void RenderEndScreenHighscore() noexcept;
+	void RenderEndScreen() noexcept;
+public:
+	void Update();
+	void Render();
 };
