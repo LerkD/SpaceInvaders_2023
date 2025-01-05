@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 enum struct EntityType
 {
@@ -6,4 +6,4 @@ enum struct EntityType
     ENEMY,
     PLAYER_PROJECTILE,
     ENEMY_PROJECTILE
-};
+};*/

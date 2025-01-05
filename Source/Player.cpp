@@ -2,7 +2,7 @@
 #include "Utility.h"
 #include <algorithm>
 
-void Player::UpdateMovement()
+void Player::Update()
 {
 	int movement = 0;
 	if (IsKeyDown(KEY_LEFT))
@@ -14,20 +14,6 @@ void Player::UpdateMovement()
 		movement = 1;
 	}
 	x_pos = std::clamp(x_pos += SPEED * movement, PLAYER_RADIUS, SCREEN_WIDTH - PLAYER_RADIUS);
-}
-void Player::UpdateAnimation() noexcept
-{
-	timer += GetFrameTime();
-	if (timer > ANIM_SPEED)
-	{
-		activeTexture = 2 ? activeTexture = 0 : activeTexture++;
-		timer = 0;
-	}
-}
-void Player::Update() 
-{
-	UpdateMovement();
-	UpdateAnimation();
 }
 
 void Player::Render(Texture2D texture) noexcept

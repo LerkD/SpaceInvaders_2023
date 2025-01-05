@@ -25,10 +25,8 @@ struct Game
 {
 private:
 	State gameState = { State::STARTSCREEN };
-	int score = 0;
-	static constexpr int scoreAddifyer = 100;
 	float shootTimer = 0;
-	bool newHighScore = false;
+	std::string draftHighscoreName = "";
 	
 	static constexpr int wallCount = 5;
 	float wallsY = SCREEN_HEIGHT - 250.0f;
@@ -46,20 +44,13 @@ private:
 	std::vector<Alien> Aliens;
 	
 	Background background;
-	Leaderboard leaderboard;
+	Leaderboard leaderboard = Leaderboard();
 	
 	Vector2 playerPos;
 	Vector2 alienPos; 
 	Vector2 cornerPos;
 	float offset;
 
-	char name[9 + 1] = "\0";     
-	int letterCount = 0;
-
-	Rectangle textBox = { 600, 500, 225, 50 };
-	bool mouseOnText = false;
-
-	int framesCounter = 0;
 
 	void Start();
 	void End() noexcept;
@@ -71,12 +62,11 @@ private:
 	void AliensShoot();
 	void ClearDeadEntities();
 	bool IsEndConditionTriggered();
-	void MouseOnEndScreenText() noexcept;
-	void MouseNotOnEndScreenText() noexcept;
-	void RenderStartScreen() noexcept;
-	void RenderGameplay();
-	void RenderEndScreenHighscore() noexcept;
-	void RenderEndScreen() noexcept;
+	void RenderGameplay() noexcept;
+	[[nodiscard]] bool constexpr isValidInput(int key, size_t len) noexcept { return (key >= 32) && (key <= 125) && (len < MAX_INPUT_CHARS); }
+	void updateHighscoreName();
+
+
 public:
 	void Update();
 	void Render();

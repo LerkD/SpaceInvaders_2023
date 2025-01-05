@@ -1,6 +1,5 @@
 #pragma once
 #include "raylib.h"
-#include "EntityType.h"
 #include "Utility.h"
 
 static constexpr float PLAYER_BASE_HEIGHT = 70.0f;
@@ -17,12 +16,7 @@ private:
     float timer = 0;
     int activeTexture = 0;
 
-    void UpdateMovement();
-    void UpdateAnimation() noexcept;
-
 public:
-    EntityType type = EntityType::PLAYER;
-
     void Render(Texture2D texture) noexcept;
     void Update();
     [[nodiscard]] bool IsDead() const noexcept { return lives <= 0; };
