@@ -1,11 +1,11 @@
 #include "raylib.h"
 #include "game.h"
-#include "Utility.h"
+#include "Window.h"
 
 
 int main(void)
 {   
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "SPACE INVADERS");
+    Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "SPACE INVADERS");
 
     SetTargetFPS(60);  
 
@@ -19,7 +19,6 @@ int main(void)
         game.Render();
         EndDrawing();
     }
-    
-    CloseWindow();       
+         
     return 0;
 }

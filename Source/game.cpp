@@ -206,7 +206,7 @@ void Game::RenderGameplay() noexcept
 void Game::updateHighscoreName() {
 	const int key = GetCharPressed();
 	if (isValidInput(key, std::size(draftHighscoreName))) {
-		draftHighscoreName.push_back(static_cast<char>(key));
+		draftHighscoreName.push_back((key));
 	}
 	if (IsKeyPressed(KEY_BACKSPACE) && !draftHighscoreName.empty()) {
 		draftHighscoreName.pop_back();

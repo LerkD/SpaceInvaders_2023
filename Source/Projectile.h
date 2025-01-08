@@ -1,12 +1,12 @@
 #pragma once
 #include "raylib.h"
 
-struct Projectile
+class Projectile
 {
 public:
     Vector2 lineStart = { 0, 0 };
     Vector2 lineEnd = { 0, 0 };
-    Projectile(Vector2 pos, bool isPlayerProjectile) noexcept;
+    explicit Projectile(Vector2 pos, bool isPlayerProjectile) noexcept;
     void Update() noexcept;
     void Render(Texture2D texture) noexcept;
     void Hit() noexcept { active = false; }

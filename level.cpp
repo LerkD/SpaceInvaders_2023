@@ -4,7 +4,7 @@
 #include <string>
 #include "level.h"
 
-void LoadLevelFromFile(const std::string& filename) 
+void static LoadLevelFromFile(const std::string& filename) 
 {
 	std::ifstream file(filename); 
 

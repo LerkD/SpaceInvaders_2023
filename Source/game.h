@@ -21,7 +21,7 @@ enum struct State
 };
 
 
-struct Game
+class Game
 {
 private:
 	State gameState = { State::STARTSCREEN };

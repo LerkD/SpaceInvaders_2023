@@ -36,11 +36,13 @@ struct Resources {
 	const OwnTexture alienTexture{ "Assets/Alien.png" };
 	const OwnTexture barrierTexture{ "Assets/Barrier.png" };
 	const OwnTexture laserTexture{ "Assets/Laser.png" };
+	
 	[[nodiscard]] Texture2D GetAlien() const noexcept { return alienTexture.Get(); }
 	[[nodiscard]] Texture2D GetWall() const noexcept { return barrierTexture.Get(); }
 	[[nodiscard]] Texture2D GetProjectile() const noexcept { return laserTexture.Get(); }
 	[[nodiscard]] Texture2D GetShip(int i) const noexcept { return shipTextures.at(i).Get(); }
-	Resources() {
+	
+	Resources() noexcept {
 		shipTextures.emplace_back(OwnTexture("Assets/Ship1.png"));
 		shipTextures.emplace_back(OwnTexture("Assets/Ship2.png"));
 		shipTextures.emplace_back(OwnTexture("Assets/Ship3.png"));

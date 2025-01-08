@@ -12,7 +12,7 @@ private:
     float size = 0;
 
 public: 
-    Star(Vector2 pos, float sz) noexcept : position(pos), size(sz) {};
+    explicit Star(Vector2 pos, float sz) noexcept : position(pos), size(sz) {};
     void Update(float _offset) noexcept { offset = _offset; }
     void Render() noexcept;
 };
